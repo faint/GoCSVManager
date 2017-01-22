@@ -12,8 +12,8 @@ type Table struct {
 	Lines []Line
 }
 
-// New create new CSVContent
-func (table *Table) New(name string, fileBytes []byte) Table {
+// createTable ...
+func createTable(name string, fileBytes []byte) Table {
 	// init content
 	newTable := Table{}
 	newTable.Name = name
@@ -43,9 +43,7 @@ func (table *Table) New(name string, fileBytes []byte) Table {
 			}
 		}
 
-		line := Line{}
-		line.SetKey(newTable.Keys) // 设置key
-		line.SetValue(string(v))   // 设置value
+		line := createLine(newTable.Keys, strings.Split(string(v), ","))
 		newTable.Lines = append(newTable.Lines, line)
 	}
 
@@ -68,7 +66,7 @@ func (table *Table) GetLine(keyName, keyValue string) (Line, bool) {
 	return Line{}, false
 }
 
-// GetLine return multip line
+// GetLines return multip line
 func (table *Table) GetLines(keyName, keyValue string) ([]Line, bool) {
 	n, result := table.Keys.GetIndex(keyName)
 	if !result { // 没有这个keyName
@@ -83,4 +81,13 @@ func (table *Table) GetLines(keyName, keyValue string) ([]Line, bool) {
 	}
 
 	return lines, true
+}
+
+// GetN Get Element N
+func (table *Table) GetN(n int) (Line, bool) {
+	if len(table.Lines) >= (n - 1) {
+		return table.Lines[n], true
+	}
+
+	return Line{}, false
 }

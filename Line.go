@@ -1,21 +1,16 @@
 package GoCSVManager
 
-import "strings"
-
 // Line ...
 type Line struct {
 	Keys   *Key
 	Values []string
 }
 
-// SetKey ...
-func (line *Line) SetKey(k *Key) {
+func createLine(k *Key, s []string) Line {
+	line := Line{}
 	line.Keys = k
-}
-
-// SetValue ...
-func (line *Line) SetValue(s string) {
-	line.Values = strings.Split(s, ",")
+	line.Values = s
+	return line
 }
 
 // GetValueBy ...

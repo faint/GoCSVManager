@@ -12,5 +12,6 @@ func (key *Key) GetIndex(fieldName string) (int, bool) {
 			return k, true
 		}
 	}
+
 	return 0, false
 }
