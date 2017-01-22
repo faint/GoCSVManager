@@ -8,6 +8,7 @@ import (
 // Table ...
 type Table struct {
 	Name  string
+	Size  int
 	Keys  *Key // 标题行
 	Lines []Line
 }
@@ -46,6 +47,7 @@ func createTable(name string, fileBytes []byte) Table {
 		line := createLine(newTable.Keys, strings.Split(string(v), ","))
 		newTable.Lines = append(newTable.Lines, line)
 	}
+	newTable.Size = len(newTable.Lines)
 
 	return newTable
 }
