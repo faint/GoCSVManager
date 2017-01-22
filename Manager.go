@@ -6,21 +6,24 @@ import (
 	"strings"
 )
 
-// List CSV List
+// List CSV文件列表
 type List struct {
-	Tables []Table
+	Tables []Table // CSV文件表格数组
 }
 
-// Load ...
+// Load 加载CSV文件：
+// 当文件已经存在List结构内时，重新读取，更新既有内容。
+// 当List结构未保存该文件时时，读取并加入List结构。
 func (list *List) Load(pathAndFilename string) error {
 	file, e := ioutil.ReadFile(pathAndFilename)
 	if e != nil {
 		return e
 	}
 
-	// 检查是否已存在同名csv
 	filename := strings.Split(path.Base(pathAndFilename), ".")[0]
 	tableNew := createTable(filename, file)
+
+	// 检查是否已存在同名csv
 	n, exist := list.isExist(filename)
 	if exist { // 如果存在，则更新列表里的CSV
 		list.Tables[n] = tableNew
@@ -31,8 +34,8 @@ func (list *List) Load(pathAndFilename string) error {
 	return nil
 }
 
-// isExist check if the csv already in CSVs
-// return the position(int) in array and isExist(bool)
+// isExist 检查指定CSV表名是否已经在结构内
+// 返回(结构内的索引值, 存在性的布尔值)
 func (list *List) isExist(name string) (int, bool) {
 	for k, v := range list.Tables {
 		if v.Name == name {
@@ -43,7 +46,7 @@ func (list *List) isExist(name string) (int, bool) {
 	return 0, false
 }
 
-// GetTable ...
+// GetTable 返回(指定表名的Table结构,存在性的真假值)
 func (list *List) GetTable(csvName string) (Table, bool) {
 	for _, v := range list.Tables {
 		if v.Name == csvName {
@@ -110,4 +113,14 @@ func (list *List) GetValueByN(csvName string, n int) (Line, bool) {
 	}
 
 	return line, true
+}
+
+// GetFirstValueByN ..
+func (list *List) GetFirstValueByN(csvName string, n int) (string, bool) {
+	line, result := list.GetValueByN(csvName, n)
+	if !result {
+		return "", false
+	}
+
+	return line.Values[0], true
 }
