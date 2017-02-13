@@ -2,6 +2,7 @@ package GoCSVManager
 
 import (
 	"bytes"
+	"regexp"
 	"strings"
 )
 
@@ -78,6 +79,49 @@ func (table *Table) GetLines(keyName, keyValue string) ([]Line, bool) {
 	lines := []Line{}
 	for _, v := range table.Lines {
 		if v.Values[n] == keyValue {
+			lines = append(lines, v)
+		}
+	}
+
+	return lines, true
+}
+
+// MatchLine ...
+func (table *Table) MatchLine(keyName, matchValue string) (Line, bool) {
+	n, result := table.Keys.GetIndex(keyName)
+	if !result {
+		return Line{}, false
+	}
+
+	for _, v := range table.Lines {
+		matched, e := regexp.MatchString(matchValue, v.Values[n])
+		if e != nil {
+			return Line{}, false
+		}
+
+		if matched {
+			return v, true
+		}
+	}
+
+	return Line{}, false
+}
+
+// MatchLines return multip line
+func (table *Table) MatchLines(keyName, matchValue string) ([]Line, bool) {
+	n, result := table.Keys.GetIndex(keyName)
+	if !result { // 没有这个keyName
+		return []Line{}, false
+	}
+
+	lines := []Line{}
+	for _, v := range table.Lines {
+		matched, e := regexp.MatchString(matchValue, v.Values[n])
+		if e != nil {
+			return []Line{}, false
+		}
+
+		if matched {
 			lines = append(lines, v)
 		}
 	}
