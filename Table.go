@@ -1,4 +1,4 @@
-package goCsv
+package goCSV
 
 import (
 	"bytes"

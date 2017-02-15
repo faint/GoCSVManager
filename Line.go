@@ -1,4 +1,4 @@
-package goCsv
+package goCSV
 
 // Line ...
 type Line struct {

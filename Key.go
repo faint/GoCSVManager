@@ -1,4 +1,4 @@
-package goCsv
+package goCSV
 
 // Key the key of the csv content
 type Key struct {
