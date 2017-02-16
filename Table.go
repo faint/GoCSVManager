@@ -55,6 +55,10 @@ func createTable(name string, fileBytes []byte) Table {
 
 // GetLine ...
 func (table *Table) GetLine(keyName, keyValue string) (Line, bool) {
+	if table.Keys == nil {
+		return Line{}, false
+	}
+
 	n, result := table.Keys.GetIndex(keyName)
 	if !result {
 		return Line{}, false
@@ -71,6 +75,10 @@ func (table *Table) GetLine(keyName, keyValue string) (Line, bool) {
 
 // GetLines return multip line
 func (table *Table) GetLines(keyName, keyValue string) ([]Line, bool) {
+	if table.Keys == nil {
+		return []Line{}, false
+	}
+
 	n, result := table.Keys.GetIndex(keyName)
 	if !result { // 没有这个keyName
 		return []Line{}, false
@@ -88,6 +96,10 @@ func (table *Table) GetLines(keyName, keyValue string) ([]Line, bool) {
 
 // MatchLine ...
 func (table *Table) MatchLine(keyName, matchValue string) (Line, bool) {
+	if table.Keys == nil {
+		return Line{}, false
+	}
+
 	n, result := table.Keys.GetIndex(keyName)
 	if !result {
 		return Line{}, false
@@ -109,6 +121,10 @@ func (table *Table) MatchLine(keyName, matchValue string) (Line, bool) {
 
 // MatchLines return multip line
 func (table *Table) MatchLines(keyName, matchValue string) ([]Line, bool) {
+	if table.Keys == nil {
+		return []Line{}, false
+	}
+
 	n, result := table.Keys.GetIndex(keyName)
 	if !result { // 没有这个keyName
 		return []Line{}, false
@@ -131,6 +147,10 @@ func (table *Table) MatchLines(keyName, matchValue string) ([]Line, bool) {
 
 // GetValuesByKey ...
 func (table *Table) GetValuesByKey(key string) ([]string, bool) {
+	if table.Keys == nil {
+		return []string{}, false
+	}
+
 	n, result := table.Keys.GetIndex(key)
 	if !result {
 		return []string{}, false
