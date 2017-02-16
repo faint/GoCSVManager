@@ -129,6 +129,24 @@ func (table *Table) MatchLines(keyName, matchValue string) ([]Line, bool) {
 	return lines, true
 }
 
+// GetValuesbyColumnName ...
+func (table *Table) GetValuesbyColumnName(columnName string) ([]string, bool) {
+	n, result := table.Keys.GetIndex(columnName)
+	if !result {
+		return []string{}, false
+	}
+
+	values := []string{}
+	for _, v := range table.Lines {
+		value, result := v.GetValueByN(n)
+		if result {
+			values = append(values, value)
+		}
+	}
+
+	return values, true
+}
+
 // GetN Get Element N
 func (table *Table) GetN(n int) (Line, bool) {
 	if len(table.Lines) >= (n - 1) {
