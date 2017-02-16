@@ -22,3 +22,11 @@ func (line *Line) GetValueBy(key string) (string, bool) {
 
 	return line.Values[n], true
 }
+
+// GetValueByN ...
+func (line *Line) GetValueByN(n int) (string, bool) {
+	if line.Values[n] == "" {
+		return "", false
+	}
+	return line.Values[n], true
+}
