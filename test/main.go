@@ -25,5 +25,10 @@ func main() {
 
 	table, _ := list.GetTable("banwords")
 	fmt.Println("Ban Line:", table.Size)
+
+	params, _ := list.GetTable("params")
+	// t := &params
+	vvv, rrr := params.GetValuesByKey("desc")
+	fmt.Println(rrr, vvv)
 	fmt.Println("CSVManager End...")
 }
