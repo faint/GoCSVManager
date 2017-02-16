@@ -129,9 +129,9 @@ func (table *Table) MatchLines(keyName, matchValue string) ([]Line, bool) {
 	return lines, true
 }
 
-// GetValuesbyColumnName ...
-func (table *Table) GetValuesbyColumnName(columnName string) ([]string, bool) {
-	n, result := table.Keys.GetIndex(columnName)
+// GetValuesByKey ...
+func (table *Table) GetValuesByKey(key string) ([]string, bool) {
+	n, result := table.Keys.GetIndex(key)
 	if !result {
 		return []string{}, false
 	}
