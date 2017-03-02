@@ -27,7 +27,7 @@ func (list *List) LoadDir(path string) (int, error) {
 			continue
 		}
 
-		err := list.Load(path + v.Name())
+		err := list.Load(path + "/" + v.Name())
 		if err != nil { // load error
 			return loadSuccessed, err
 		}
