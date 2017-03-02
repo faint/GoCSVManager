@@ -2,15 +2,14 @@ package main
 
 import (
 	"fmt"
+	"gocsv"
 	"io/ioutil"
 	"strings"
-
-	"../../goCSV"
 )
 
 func main() {
 	fmt.Println("检测CSV读取合法性")
-	list := new(goCSV.List)
+	list := new(gocsv.List)
 
 	dirList, e := ioutil.ReadDir("../csv/")
 	if e != nil {

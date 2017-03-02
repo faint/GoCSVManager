@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-
-	"../../goCSV"
+	"gocsv"
 )
 
 func main() {
 	fmt.Println("CSVManager Start...")
 
-	list := new(goCSV.List)
+	list := new(gocsv.List)
 	list.Load("../csv/params.csv")
 	list.Load("../csv/banwords.csv")
 
