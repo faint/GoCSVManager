@@ -88,14 +88,29 @@ func (list *List) GetTable(csvName string) (Table, bool) {
 	return Table{}, false
 }
 
+// GetLine return line
+func (list *List) GetLine(csvName, keyFieldName, keyFieldValue string) (Line, bool) {
+	table, result := list.GetTable(csvName) //  读表
+	if !result {
+		return Line{}, false
+	}
+
+	line, result := table.GetLine(keyFieldName, keyFieldValue) // 读行
+	if !result {
+		return Line{}, false
+	}
+
+	return line, true
+}
+
 // GetValueByFiled return only one line
-func (list *List) GetValueByFiled(csvName, keyFiledName, keyFiledValue, needField string) (string, bool) {
+func (list *List) GetValueByFiled(csvName, keyFieldName, keyFieldValue, needField string) (string, bool) {
 	table, result := list.GetTable(csvName) //  读表
 	if !result {
 		return "", false
 	}
 
-	line, result := table.GetLine(keyFiledName, keyFiledValue) // 读行
+	line, result := table.GetLine(keyFieldName, keyFieldValue) // 读行
 	if !result {
 		return "", false
 	}
@@ -109,13 +124,13 @@ func (list *List) GetValueByFiled(csvName, keyFiledName, keyFiledValue, needFiel
 }
 
 // GetValuesByFiled return multi line
-func (list *List) GetValuesByFiled(csvName, keyFiledName, keyFiledValue, needField string) ([]string, bool) {
+func (list *List) GetValuesByFiled(csvName, keyFieldName, keyFieldValue, needField string) ([]string, bool) {
 	table, result := list.GetTable(csvName) //  读表
 	if !result {
 		return []string{}, false
 	}
 
-	lines, result := table.GetLines(keyFiledName, keyFiledValue)
+	lines, result := table.GetLines(keyFieldName, keyFieldValue)
 	if !result {
 		return []string{}, false
 	}
