@@ -1,6 +1,7 @@
 package gocsv
 
 import (
+	"errors"
 	"io/ioutil"
 	"path"
 	"strings"
@@ -11,7 +12,38 @@ type List struct {
 	Tables []Table // CSV文件表格数组
 }
 
-// Load 加载CSV文件：
+// LoadDir load all the .csv file in target Dir.
+func (list *List) LoadDir(path string) (int, error) {
+	loadSuccessed := 0 // load successful count
+
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		return loadSuccessed, err
+	}
+
+	for _, v := range files {
+		nameExtensions := strings.Split(v.Name(), ".")
+		if nameExtensions[len(nameExtensions)-1] != "csv" { // 扩展名不为csv的则略过
+			continue
+		}
+
+		err := list.Load(path + v.Name())
+		if err != nil { // load error
+			return loadSuccessed, err
+		}
+
+		// check legal
+		csvName := nameExtensions[0]
+		_, result := list.GetTable(csvName)
+		if !result { // csv struct illegal
+			return loadSuccessed, errors.New(csvName + " struct illegal")
+		}
+		loadSuccessed++
+	}
+	return loadSuccessed, nil
+}
+
+// Load 加载CSV文件.
 // 当文件已经存在List结构内时，重新读取，更新既有内容。
 // 当List结构未保存该文件时时，读取并加入List结构。
 func (list *List) Load(pathAndFilename string) error {
@@ -22,7 +54,6 @@ func (list *List) Load(pathAndFilename string) error {
 
 	filename := strings.Split(path.Base(pathAndFilename), ".")[0]
 	tableNew := createTable(filename, file)
-
 	// 检查是否已存在同名csv
 	n, exist := list.isExist(filename)
 	if exist { // 如果存在，则更新列表里的CSV
