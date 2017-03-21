@@ -3,6 +3,7 @@ package gocsv
 import (
 	"errors"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -86,4 +87,22 @@ func (line *Line) GetInt(key string) (int, error) {
 		return int(0), err
 	}
 	return int(i), nil
+}
+
+// GetIntSlice return []int
+func (line *Line) GetIntSlice(key string) ([]int, error) {
+	var intSlice []int
+	v, result := line.GetValueBy(key)
+	if !result {
+		return intSlice, errors.New(keyNotFound + key)
+	}
+	slice := strings.Split(v, "|")
+	for _, p := range slice {
+		i, err := strconv.ParseInt(p, 10, 32)
+		if err != nil {
+			return []int{}, err
+		}
+		intSlice = append(intSlice, int(i))
+	}
+	return intSlice, nil
 }
