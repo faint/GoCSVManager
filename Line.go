@@ -1,5 +1,10 @@
 package gocsv
 
+import (
+	"errors"
+	"strconv"
+)
+
 // Line ...
 type Line struct {
 	Keys   *Key
@@ -29,4 +34,52 @@ func (line *Line) GetValueByN(n int) (string, bool) {
 		return "", false
 	}
 	return line.Values[n], true
+}
+
+// GetString return string
+func (line *Line) GetString(key string) (string, error) {
+	v, result := line.GetValueBy(key)
+	if !result {
+		return "", errors.New("csv.GetValueByKey not found:" + key)
+	}
+	return v, nil
+}
+
+// GetInt64 return int64
+func (line *Line) GetInt64(key string) (int64, error) {
+	v, result := line.GetValueBy(key)
+	if !result {
+		return int64(0), errors.New("csv.GetValueByKey not found:" + key)
+	}
+	i, err := strconv.ParseInt(v, 10, 64)
+	if err != nil {
+		return int64(0), err
+	}
+	return i, nil
+}
+
+// GetInt32 return int32
+func (line *Line) GetInt32(key string) (int32, error) {
+	v, result := line.GetValueBy(key)
+	if !result {
+		return int32(0), errors.New("csv.GetValueByKey not found:" + key)
+	}
+	i, err := strconv.ParseInt(v, 10, 32)
+	if err != nil {
+		return int32(0), err
+	}
+	return int32(i), nil
+}
+
+// GetInt return int
+func (line *Line) GetInt(key string) (int, error) {
+	v, result := line.GetValueBy(key)
+	if !result {
+		return int(0), errors.New("csv.GetValueByKey not found:" + key)
+	}
+	i, err := strconv.ParseInt(v, 10, 32)
+	if err != nil {
+		return int(0), err
+	}
+	return int(i), nil
 }
