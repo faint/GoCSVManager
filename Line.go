@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+const (
+	keyNotFound = "key not found in csv:"
+)
+
 // Line ...
 type Line struct {
 	Keys   *Key
@@ -40,7 +44,7 @@ func (line *Line) GetValueByN(n int) (string, bool) {
 func (line *Line) GetString(key string) (string, error) {
 	v, result := line.GetValueBy(key)
 	if !result {
-		return "", errors.New("csv.GetValueByKey not found:" + key)
+		return "", errors.New(keyNotFound + key)
 	}
 	return v, nil
 }
@@ -49,7 +53,7 @@ func (line *Line) GetString(key string) (string, error) {
 func (line *Line) GetInt64(key string) (int64, error) {
 	v, result := line.GetValueBy(key)
 	if !result {
-		return int64(0), errors.New("csv.GetValueByKey not found:" + key)
+		return int64(0), errors.New(keyNotFound + key)
 	}
 	i, err := strconv.ParseInt(v, 10, 64)
 	if err != nil {
@@ -62,7 +66,7 @@ func (line *Line) GetInt64(key string) (int64, error) {
 func (line *Line) GetInt32(key string) (int32, error) {
 	v, result := line.GetValueBy(key)
 	if !result {
-		return int32(0), errors.New("csv.GetValueByKey not found:" + key)
+		return int32(0), errors.New(keyNotFound + key)
 	}
 	i, err := strconv.ParseInt(v, 10, 32)
 	if err != nil {
@@ -75,7 +79,7 @@ func (line *Line) GetInt32(key string) (int32, error) {
 func (line *Line) GetInt(key string) (int, error) {
 	v, result := line.GetValueBy(key)
 	if !result {
-		return int(0), errors.New("csv.GetValueByKey not found:" + key)
+		return int(0), errors.New(keyNotFound + key)
 	}
 	i, err := strconv.ParseInt(v, 10, 32)
 	if err != nil {
