@@ -6,10 +6,6 @@ import (
 	"strings"
 )
 
-const (
-	keyNotFound = "key not found in csv:"
-)
-
 // Line ...
 type Line struct {
 	Keys   *Key

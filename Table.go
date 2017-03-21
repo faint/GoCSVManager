@@ -2,8 +2,14 @@ package gocsv
 
 import (
 	"bytes"
+	"errors"
 	"regexp"
 	"strings"
+)
+
+const (
+	keyNotFound    = "key not found in csv:"
+	targetNotFound = "target not found in csv"
 )
 
 // Table ...
@@ -174,4 +180,21 @@ func (table *Table) GetN(n int) (Line, bool) {
 	}
 
 	return Line{}, false
+}
+
+// GetInt64ByKey 获取指定键值对的int64的值
+func (table *Table) GetInt64ByKey(key, value, target string) (int64, error) {
+	if table.Keys == nil {
+		return int64(0), errors.New(keyNotFound + key)
+	}
+	n, result := table.Keys.GetIndex(key)
+	if !result {
+		return int64(0), errors.New(keyNotFound + key)
+	}
+	for _, v := range table.Lines {
+		if v.Values[n] == value {
+			return v.GetInt64(target)
+		}
+	}
+	return int64(0), errors.New(keyNotFound + key)
 }
