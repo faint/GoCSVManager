@@ -42,7 +42,8 @@ func createTable(name string, fileBytes []byte) Table {
 
 		if v[0] == '#' { // 处理注释行
 			if len(v) > 1 { // 处理非仅#的注释行
-				if v[1] == '!' && newTable.Keys == nil { // 在标题行未处理过的情况下，!视为标题行处理，否则不处理
+				// 在标题行未处理过的情况下，!视为键行处理，否则不处理
+				if v[1] == '!' && newTable.Keys == nil {
 					newKeys := new(Key)
 					newKeys.Value = strings.Split(string(v[2:]), ",")
 					newTable.Keys = newKeys
